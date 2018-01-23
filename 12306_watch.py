@@ -11,6 +11,7 @@ class fuck12306(object):
         self.r.headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
                         'Referer':'http://www.12306.cn/mormhweb/1/4/index_fl.html'}
         self.one=[]
+        self.count=0
 
     def req_html(self):
         html=self.r.get(self.url)
@@ -27,16 +28,16 @@ class fuck12306(object):
         return self.one
 
     def xh(self):
-        count=0
         html=self.req_html()
         doc=pq(html)
         ulli=doc.find('#newList ul li')
         for i in ulli.items():
             item=i.text()
             if item not in self.one:
-                if count == 5:
+                self.count += 1
+                if self.count == 5:
                     self.one.append(item)
-
+                    self.count=0
         return self.one
 
 if __name__ == '__main__':
